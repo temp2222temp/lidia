@@ -18,7 +18,7 @@
 
   <form>
     <label for="numOfDiners">Number of Diners</label>
-    <input type="number" id="numOfDiners" min="1" value="1"><br><br>
+    <input type="number" id="numOfDiners" min="1" value="1" step="1"><br><br>
 
     <label for="totalMeal">Total Cost of the Meal</label>
     <input type="number" id="totalMeal" min="0" step="0.01" value="0" placeholder="0.00"><br><br>
@@ -54,9 +54,10 @@
   </form>
 
   <h2>Calculated Results:</h2>
-    <p id="totalBill">Total Bill: $0.00</p>
+    <p id="preTaxTotal">Pre-tax Total: $0.00</p>
     <p id="totalTip">Total Tip (pre-tax): $0.00 (0%)</p>
     <p id="totalTax">Total Tax: $0.00</p>
+    <p id="totalBill">Total Bill: $0.00</p>
     <p id="costPerPerson"><b>Split Dinner: $0.00</b></p>
 
   <script>
@@ -80,14 +81,16 @@
       const provinceTax = provinceTaxInput.value;
       const taxRate = getTaxRate(provinceTax);
 
-      const preTaxTotal = totalMeal / (1 + taxRate);
-      const totalTip = preTaxTotal * tippingPerc;
-      const totalTax = totalMeal - preTaxTotal;
-      const costPerPerson = totalMeal / numOfDiners;
+      // const preTaxTotal = totalMeal / (1 + taxRate);
+      const totalTip = totalMeal * tippingPerc;
+      const totalTax = totalMeal * taxRate;
+      const totalBill =  totalMeal + totalTip + totalTax;
+      const costPerPerson = totalBill / numOfDiners;
 
-      document.getElementById('totalBill').textContent = `Total Bill: $${totalMeal.toFixed(2)}`;
+      document.getElementById('preTaxTotal').textContent = `Pre-tax Total: $${totalMeal.toFixed(2)}`;
       document.getElementById('totalTip').textContent = `Total Tip (pre-tax): $${totalTip.toFixed(2)} (${(tippingPerc * 100).toFixed(0)}%)`;
       document.getElementById('totalTax').textContent = `Total Tax: $${totalTax.toFixed(2)}`;
+      document.getElementById('totalBill').textContent = `Total Bill: $${totalBill.toFixed(2)}`;
       document.getElementById('costPerPerson').textContent = `Split Dinner: $${costPerPerson.toFixed(2)}`;
     }
 
